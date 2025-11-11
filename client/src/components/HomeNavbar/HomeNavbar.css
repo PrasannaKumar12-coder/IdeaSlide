@@ -110,17 +110,7 @@
   transition: background 0.3s ease;
 } 
 
-.mobile-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
-}
 
-.mobile-toggle.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.mobile-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
-}
 
 /* Mobile Menu Panel */
 .mobile-menu {
@@ -165,4 +155,37 @@
   .mobile-toggle {
     display: flex;
   }
+}
+
+/* Fix Mobile Menu Layout */
+.mobile-menu-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 6rem 2rem 2rem;
+  justify-content: space-between;
+}
+
+/* Mobile Nav Links */
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Mobile CTA Button */
+.mobile-cta-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-cta-button {
+  padding: 1rem 2rem;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
 }

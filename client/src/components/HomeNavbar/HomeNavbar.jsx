@@ -4,6 +4,8 @@ import { Link as ScrollLink } from "react-scroll";
 import "./HomeNavbar.css";
 import IdeaSlide from "../../assets/IdeaSlide-Logo-dark.png";
 
+import { MdMenu } from "react-icons/md";
+
 const HomeNavbar = () => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -119,9 +121,7 @@ const HomeNavbar = () => {
             className={`mobile-toggle ${isMenuOpen ? "active" : ""}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <span><MdMenu/></span>
           </button>
         </div>
       </header>
