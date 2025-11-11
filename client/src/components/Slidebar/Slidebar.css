@@ -101,7 +101,6 @@
   .sidebar-container {
     width: 260px;
     height: 100dvh;
-    border: 1px solid red;
   }
 
   .sidebar-container.closed {
