@@ -484,11 +484,13 @@
 /* Mobile Small (320px - 479px) - Base styles already cover this */
 
 /* Mobile Large (480px - 599px) */
-@media (min-width: 480px) {
-  /* .main-wrapper{
+@media (max-width: 480px) {
+  .main-container{
     padding: 0;
-    height:100vh;
-  } */
+    margin-top: 20px;
+  }
+}
+@media (min-width: 480px) {
   .messages-content {
     max-width: 90%;
     padding: 24px 14px 110px;

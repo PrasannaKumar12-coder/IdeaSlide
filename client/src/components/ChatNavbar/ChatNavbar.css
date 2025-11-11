@@ -93,4 +93,5 @@ header {
   padding: 15px;
   display: flex;
   justify-content: space-between;
+  max-height: 11vh;
 }
