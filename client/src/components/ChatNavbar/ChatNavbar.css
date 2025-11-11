@@ -1,0 +1,96 @@
+body {
+  background-color: #212121 !important;
+}
+header {
+  border-bottom: 1px solid #424242;
+  padding: 0 5%;
+}
+/* Hide sidebar toggle button on desktop */
+.chat-toggle-btn {
+  display: none !important;
+}
+/* Show toggle button only in tablet + mobile */
+@media (min-width: 1024px) { 
+  .chat-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+}
+/* Desktop 20% sidebar */
+.sidebar-container.open {
+  width: 20%;
+  transform: translateX(0);
+}
+
+/* Desktop collapsed version (optional) */
+.sidebar-container.closed {
+  width: 0;
+}
+
+/* Mobile drawer mode */
+@media (max-width: 1024px) {
+  .chat-toggle-btn {
+  display: block !important;
+}
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 70%;
+    max-width: 300px;
+    background: #fff;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+
+  .sidebar-container.open {
+    transform: translateX(0);
+  }
+
+  /* Dark overlay */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 998;
+  }
+}
+
+
+
+
+.chat-login-button {
+  padding: 0.6rem 1.5rem;
+  border-radius: 150px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.chat-login-button:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+.chat-brand-logo {
+  height: 40px;
+}
+.chat-header-container {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,48 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+  animation: popup-scale 0.3s ease;
+}
+
+@keyframes popup-scale {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.open-btn, .close-btn {
+  padding: 10px 16px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.open-btn:hover,
+.close-btn:hover {
+  background: #4338ca;
+}
