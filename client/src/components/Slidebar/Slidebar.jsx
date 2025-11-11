@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Slidebar.css";
-import IdeaSlidePNG from "../../assets/Ideaslide-favicon-512x512.png";
+import IdeaSlidePNG from "../../assets/Ideaslide-favicon.png";
 import { BsLayoutSidebar } from "react-icons/bs";
 import { SlNote } from "react-icons/sl";
 
