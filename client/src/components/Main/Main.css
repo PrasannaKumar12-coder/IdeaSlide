@@ -487,7 +487,7 @@
 @media (max-width: 480px) {
   .main-container{
     padding: 0;
-    margin-top: 20px;
+    margin-top: 30px;
   }
 }
 @media (min-width: 480px) {
