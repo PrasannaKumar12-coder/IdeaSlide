@@ -172,7 +172,7 @@ const HomeNavbar = () => {
 
           <div className="mobile-cta-section">
             <Link
-              to="/get-started"
+              to="/chat"
               className="mobile-cta-button"
               onClick={() => setIsMenuOpen(false)}
             >
