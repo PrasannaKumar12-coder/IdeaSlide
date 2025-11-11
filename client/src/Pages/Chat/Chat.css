@@ -16,6 +16,7 @@
   .chat-section-mobile {
     position: relative;
     flex: 1;
+    max-height: 100vh;
     overflow: hidden;
   }
 
