@@ -37,6 +37,24 @@ const Main = () => {
     }
   }, [inputText]);
 
+  // Load chat messages from localStorage//////////////////////////////////
+useEffect(() => {
+  const saved = localStorage.getItem("chat_messages");
+  if (saved) {
+    setMessages(JSON.parse(saved));
+    setShowWelcome(false); // hide welcome if chat already exists
+  }
+}, []);
+
+// Save messages to localStorage whenever messages update
+useEffect(() => {
+  if (messages.length > 0) {
+    localStorage.setItem("chat_messages", JSON.stringify(messages));
+  }
+}, [messages]);
+
+
+
   // Initialize speech recognition
   useEffect(() => {
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
@@ -88,6 +106,7 @@ const Main = () => {
   };
 
   const GeminiResponse = async () => {
+    
     try {
       const url =
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
@@ -138,6 +157,22 @@ const Main = () => {
       console.log("err", err);
       return { text: "Something went wrong.", html: null };
     }
+  };
+
+  const regenerateResponse = async (messageId) => {
+    setMessages((prev) => prev.filter((msg) => msg.id !== messageId));
+
+    // *** WAIT for AI response ***
+    const ai = await GeminiResponse();
+
+    const aiMessage = {
+      id: Date.now() + 1,
+      text: ai?.text || "",
+      html: ai?.html || null,
+      isUser: false,
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
   };
 
   const handleSend = async () => {
@@ -225,22 +260,6 @@ const Main = () => {
       window.speechSynthesis.speak(utterance);
       setIsSpeaking(messageId);
     }
-  };
-
-  const regenerateResponse = async (messageId) => {
-    setMessages((prev) => prev.filter((msg) => msg.id !== messageId));
-
-    // *** WAIT for AI response ***
-    const ai = await GeminiResponse();
-
-    const aiMessage = {
-      id: Date.now() + 1,
-      text: ai?.text || "",
-      html: ai?.html || null,
-      isUser: false,
-    };
-
-    setMessages((prev) => [...prev, aiMessage]);
   };
 
   return (
@@ -467,6 +486,7 @@ const Main = () => {
                       </svg>
                     </button>
 
+                    {/* Send Message */}
                     <button
                       onClick={handleSend}
                       disabled={!inputText.trim()}

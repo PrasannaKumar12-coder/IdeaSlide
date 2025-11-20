@@ -78,7 +78,7 @@
 .messages-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 /* Message Wrapper */
@@ -100,16 +100,16 @@
 .message-content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .message-bubble {
   color: #fff;
   max-width: 100%;
-  font-weight: 550;
-  border-radius: 20px;
-  font-size: 14px !important;
-  padding: 6px 12px;
+  font-weight: 500;
+  border-radius: 18px;
+  font-size: 15px !important;
+  padding: 8px 14px;
 }
 
 .bubble-user {
@@ -117,16 +117,27 @@
 }
 
 .bubble-ai {
-  background: transparent;
-  padding: 0;
+  padding: 10px 14px;
+  max-width: 760px;
 }
+
 
 .message-text {
   margin: 0;
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
+  line-height: 1.5;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+
+.message-bubble .message-text {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.bubble-user .message-text {
+  font-weight: 600;
 }
 
 /* Markdown-specific styles when rendering HTML from AI */
@@ -136,12 +147,12 @@
 .message-markdown h1,
 .message-markdown h2,
 .message-markdown h3 {
-  margin: 0 0 3px 0;
   color: #fff;
-  line-height: 1.2;
+  font-weight: normal;
+  font-size:24px ;
 }
 .message-markdown p {
-  margin: 0 0 3px 0;
+  font-size: 16px;
 }
 .message-markdown ul,
 .message-markdown ol {
@@ -159,11 +170,9 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
     "Courier New", monospace;
   font-size: 13px;
-  margin: 8px 0;
 }
 .message-markdown code {
   background: rgba(255, 255, 255, 0.06);
-  padding: 2px 6px;
   border-radius: 6px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
     "Courier New", monospace;
@@ -173,8 +182,8 @@
   border-left: 3px solid rgba(255, 255, 255, 0.06);
   padding-left: 12px;
   color: rgba(255, 255, 255, 0.8);
-  margin: 8px 0;
 }
+
 
 /* Message Actions */
 .message-actions {
@@ -559,6 +568,7 @@
 
   .input-container {
     max-width: 90%;
+    margin-bottom: 8px;
   }
 
   .input-area {
@@ -584,9 +594,7 @@
     font-size: 15px;
     padding: 5px 0;
   }
-  .input-textarea::placeholder {
-    font-size: 10px !important;
-  }
+
   .format-menu {
     left: 0;
     right: auto;
