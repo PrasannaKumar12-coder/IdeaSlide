@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import ChatNavbar from "../ChatNavbar/ChatNavbar";
 import "./Main.css";
+import DOMPurify from "dompurify";
+import { marked } from "marked";
+
+// Note: dotenv does not run in the browser. Use Vite env vars (`VITE_` prefix)
+// and access them via `import.meta.env`.
 
 const Main = () => {
   const [messages, setMessages] = useState([]);
@@ -82,7 +87,60 @@ const Main = () => {
     }
   };
 
-  const handleSend = () => {
+  const GeminiResponse = async () => {
+    try {
+      const url =
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+      const options = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "X-goog-api-key": import.meta.env.VITE_GEMINI_KEY,
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: inputText }], // send user input
+            },
+          ],
+        }),
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        // Try a few common response paths and fall back to a default string.
+        const text =
+          data?.candidates?.[0]?.content?.[0]?.parts?.[0]?.text ||
+          data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+          data?.output?.[0]?.content?.text ||
+          data?.candidates?.[0]?.content?.text ||
+          "No response";
+
+        // Convert markdown (if present) to HTML and sanitize it.
+        let html = null;
+        try {
+          const looksLikeMarkdown = /(^#|\n\* |\n- |```)/m.test(text);
+          if (looksLikeMarkdown) {
+            const raw = marked.parse(text);
+            html = DOMPurify.sanitize(raw);
+          }
+        } catch (e) {
+          console.warn("Markdown parse error", e);
+        }
+
+        console.log("Gemini response text length:", (text || "").length);
+        return { text, html };
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (err) {
+      console.log("err", err);
+      return { text: "Something went wrong.", html: null };
+    }
+  };
+
+  const handleSend = async () => {
     if (inputText.trim() === "") return;
 
     if (showWelcome) {
@@ -96,20 +154,33 @@ const Main = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse = {
-        id: Date.now() + 1,
-        text: `This is an AI response to: "${inputText}"${
-          selectedFormat ? `\n\nFormat: ${selectedFormat}` : ""
-        }`,
-        isUser: false,
-      };
-      setMessages((prev) => [...prev, aiResponse]);
-    }, 1000);
-
     setInputText("");
+
+    // *** WAIT for AI response ***
+    const ai = await GeminiResponse();
+
+    const aiMessage = {
+      id: Date.now() + 1,
+      text: ai?.text || "",
+      html: ai?.html || null,
+      isUser: false,
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
+    // // Simulate AI response
+    // setTimeout(() => {
+    //   const aiResponse = {
+    //     id: Date.now() + 1,
+    //     // text: `This is an AI response to: "${inputText}"${
+    //     //   selectedFormat ? `\n\nFormat: ${selectedFormat}` : ""
+    //     // }`,
+    //     text: GeminiResponse(),
+    //     isUser: false,
+    //   };
+    //   setMessages((prev) => [...prev, aiResponse]);
+    // }, 1000);
+
+    // setInputText("");
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
@@ -156,19 +227,20 @@ const Main = () => {
     }
   };
 
-  const regenerateResponse = (messageId) => {
+  const regenerateResponse = async (messageId) => {
     setMessages((prev) => prev.filter((msg) => msg.id !== messageId));
 
-    setTimeout(() => {
-      const aiResponse = {
-        id: Date.now() + 1,
-        text: `This is a regenerated AI response${
-          selectedFormat ? `\n\nFormat: ${selectedFormat}` : ""
-        }`,
-        isUser: false,
-      };
-      setMessages((prev) => [...prev, aiResponse]);
-    }, 1000);
+    // *** WAIT for AI response ***
+    const ai = await GeminiResponse();
+
+    const aiMessage = {
+      id: Date.now() + 1,
+      text: ai?.text || "",
+      html: ai?.html || null,
+      isUser: false,
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
   };
 
   return (
@@ -202,7 +274,14 @@ const Main = () => {
                         message.isUser ? "bubble-user" : "bubble-ai"
                       }`}
                     >
-                      <p className="message-text">{message.text}</p>
+                      {message.html ? (
+                        <div
+                          className="message-text message-markdown"
+                          dangerouslySetInnerHTML={{ __html: message.html }}
+                        />
+                      ) : (
+                        <p className="message-text">{message.text}</p>
+                      )}
                     </div>
 
                     {/* AI Message Actions */}
@@ -327,19 +406,6 @@ const Main = () => {
             {/* Input Box */}
             <div className="input-box">
               <div className="input-wrapper">
-                {/* Row 1: Text Input */}
-                <textarea
-                  autoFocus
-                  ref={textareaRef}
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Message AI Assistant..."
-                  rows={1}
-                  className="input-textarea"
-                />
-
-                {/* Row 2: Controls */}
                 <div className="input-controls">
                   {/* Left: Plus/Format Button */}
                   <button
@@ -364,6 +430,17 @@ const Main = () => {
                       />
                     </svg>
                   </button>
+                  {/* Row 1: Text Input */}
+                  <textarea
+                    autoFocus
+                    ref={textareaRef}
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Message AI Assistant..."
+                    rows={1}
+                    className="input-textarea"
+                  />
 
                   {/* Right: Mic and Send Buttons */}
                   <div className="input-actions">

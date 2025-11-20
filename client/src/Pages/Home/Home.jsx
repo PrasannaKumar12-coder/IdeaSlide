@@ -65,7 +65,7 @@ const Home = () => {
         <div className="hero-container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Transform Your Ideas into{" "} 
+              Transform Your Ideas into{" "} <br />
               <span id="gradient-text">
                 <ReactTyped
                   strings={[
